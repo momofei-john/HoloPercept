@@ -1,0 +1,61 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "HoloPercept: train",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/train.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "args": [
+        "--root_path", "${workspaceFolder}/datasets",
+        "--image_seg_root", "${input:imageSegRoot}",
+        "--image_cls_root", "${input:imageClsRoot}",
+        "--video_seg_root", "${input:videoSegRoot}",
+        "--video_cls_root", "${input:videoClsRoot}",
+        "--output_dir", "${workspaceFolder}/exp_out/holopercept",
+        "--max_epochs", "${input:maxEpochs}",
+        "--batch_size", "1",
+        "--seg_datasets", "UDIAT,DDTI",
+        "--cls_datasets", "Appendix,Fatty-Liver",
+        "--video_seg_datasets", "CAMUS,EchoNet",
+        "--video_cls_datasets", "Breast,Thyroid",
+        "--val_seg_datasets", "UDIAT,DDTI",
+        "--val_cls_datasets", "Appendix,Fatty-Liver",
+        "--val_video_seg_datasets", "CAMUS,EchoNet",
+        "--val_video_cls_datasets", "Breast,Thyroid",
+        "--opts", "MODEL.PRETRAIN_CKPT", "${input:backbone}"
+      ]
+    },
+    {
+      "name": "HoloPercept: test",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "args": [
+        "--root_path", "${workspaceFolder}/datasets",
+        "--image_seg_root", "${input:imageSegRoot}",
+        "--image_cls_root", "${input:imageClsRoot}",
+        "--video_seg_root", "${input:videoSegRoot}",
+        "--video_cls_root", "${input:videoClsRoot}",
+        "--checkpoint", "${workspaceFolder}/exp_out/holopercept/best_model.pth",
+        "--output_dir", "${workspaceFolder}/exp_out/evaluation",
+        "--seg_datasets", "UDIAT,DDTI",
+        "--cls_datasets", "Appendix,Fatty-Liver",
+        "--video_seg_datasets", "CAMUS,EchoNet",
+        "--video_cls_datasets", "Breast,Thyroid"
+      ]
+    }
+  ],
+  "inputs": [
+    {"id": "maxEpochs", "type": "promptString", "description": "Training epochs", "default": "200"},
+    {"id": "imageSegRoot", "type": "promptString", "description": "Directory containing image segmentation datasets"},
+    {"id": "imageClsRoot", "type": "promptString", "description": "Directory containing image classification datasets"},
+    {"id": "videoSegRoot", "type": "promptString", "description": "Directory containing CAMUS and EchoNet"},
+    {"id": "videoClsRoot", "type": "promptString", "description": "Directory containing Breast and Thyroid video classification datasets"},
+    {"id": "backbone", "type": "promptString", "description": "Swin-Tiny backbone checkpoint (.pth)"}
+  ]
+}

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pycache_tmp/
+.idea/
+datasets/
+pretrained_ckpt/
+exp_out/
+predictions/
+*.pth
+*.pt
+*.ckpt
+*.pdf
+*.tex
+Response_to_Reviewers*
+tmp_*
